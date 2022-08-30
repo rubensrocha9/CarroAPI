@@ -1,0 +1,80 @@
+﻿using AutoMapper;
+using CarroAPI.Data;
+using CarroAPI.Data.Dtos.Carros;
+using CarroAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace CarroAPI.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class CarroController : ControllerBase
+    {
+        private CarroAPIContext _context;
+        private IMapper _mapper;
+
+        public CarroController(CarroAPIContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public IActionResult AdicionarCarro([FromBody] CreateCarrosDto carroDto)
+        {
+            Carro carro = _mapper.Map<Carro>(carroDto);
+
+            _context.Carro.Add(carro);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(RecuperarPorId), new { Id = carro.Id }, carro);
+        }
+
+        [HttpGet]
+        public IQueryable<Carro> RecuperarCarro()
+        {
+            return _context.Carro
+                .Include(c => c.Adicionais);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult RecuperarPorId(int id)
+        {
+            Carro carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
+            if (carro != null)
+            {
+                ReadCarrosDto carrosDto = _mapper.Map<ReadCarrosDto>(carro);
+                return Ok(carrosDto);
+            }
+            return NotFound();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult AtualizarCarro(int id, [FromForm] UpdateCarrosDto carroDto)
+        {
+            Carro carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
+            if (carro == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(carroDto, carro);
+
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult RemoverCarroPotId(int id)
+        {
+            Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            if (carro == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(carro);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+    }
+}
