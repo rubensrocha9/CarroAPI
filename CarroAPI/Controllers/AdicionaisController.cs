@@ -2,6 +2,7 @@
 using CarroAPI.Data;
 using CarroAPI.Data.Dtos;
 using CarroAPI.Data.Dtos.Adicionais;
+using CarroAPI.Data.Dtos.Carros;
 using CarroAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,21 @@ namespace CarroAPI.Controllers
                 return Ok(adicionaisDto);
             }
             return NotFound();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult AtualizarAdicionais(int id, [FromBody] UpdateAdicionaisDto adicionaisDto)
+        {
+            AdicionaisCarro adicionais = _context.Opcionais.FirstOrDefault(c => c.CarroId == id);
+            
+            if (adicionais == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(adicionaisDto, adicionais);
+
+            _context.SaveChanges();
+            return NoContent();
         }
     }
 }

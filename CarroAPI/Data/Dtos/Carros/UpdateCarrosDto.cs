@@ -6,6 +6,5 @@ namespace CarroAPI.Data.Dtos.Carros
     {
         public int QntdPortas { get; set; }
         public string CorDoCarro { get; set; }
-        public ICollection<AdicionaisCarro> Adicionais { get; set; }
     }
 }

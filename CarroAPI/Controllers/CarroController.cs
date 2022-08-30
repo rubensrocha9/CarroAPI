@@ -50,9 +50,10 @@ namespace CarroAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizarCarro(int id, [FromForm] UpdateCarrosDto carroDto)
+        public IActionResult AtualizarCarro(int id, [FromBody] UpdateCarrosDto carroDto)
         {
-            Carro carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
+            Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            
             if (carro == null)
             {
                 return NotFound();
@@ -67,6 +68,7 @@ namespace CarroAPI.Controllers
         public IActionResult RemoverCarroPotId(int id)
         {
             Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            
             if (carro == null)
             {
                 return NotFound();

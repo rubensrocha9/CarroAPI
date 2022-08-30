@@ -2,7 +2,7 @@
 
 namespace CarroAPI.Data.Dtos.Adicionais
 {
-    public class UpdateAdicionaisDto : Automovel
+    public class UpdateAdicionaisDto
     {
         public string OpcionaisCarros { get; set; }
     }
