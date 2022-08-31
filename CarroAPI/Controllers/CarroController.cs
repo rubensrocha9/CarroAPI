@@ -68,7 +68,8 @@ namespace CarroAPI.Controllers
         public IActionResult RemoverCarroPotId(int id)
         {
             Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
-            
+            carro.Adicionais.Clear();
+
             if (carro == null)
             {
                 return NotFound();

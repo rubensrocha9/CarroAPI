@@ -49,20 +49,5 @@ namespace CarroAPI.Controllers
             }
             return NotFound();
         }
-
-        [HttpPut("{id}")]
-        public IActionResult AtualizarAdicionais(int id, [FromBody] UpdateAdicionaisDto adicionaisDto)
-        {
-            AdicionaisCarro adicionais = _context.Opcionais.FirstOrDefault(c => c.CarroId == id);
-            
-            if (adicionais == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(adicionaisDto, adicionais);
-
-            _context.SaveChanges();
-            return NoContent();
-        }
     }
 }
