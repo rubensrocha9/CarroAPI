@@ -53,7 +53,8 @@ namespace CarroAPI.Controllers
         public IActionResult AtualizarCarro(int id, [FromBody] UpdateCarrosDto carroDto)
         {
             Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
-            
+            carro.Adicionais.Clear();
+
             if (carro == null)
             {
                 return NotFound();
@@ -68,7 +69,6 @@ namespace CarroAPI.Controllers
         public IActionResult RemoverCarroPotId(int id)
         {
             Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
-            carro.Adicionais.Clear();
 
             if (carro == null)
             {
