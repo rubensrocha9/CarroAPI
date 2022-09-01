@@ -7,7 +7,6 @@ namespace CarroAPI.Models
         public int Id { get; set; }
         public int QntdPortas { get; set; }
         public string CorDoCarro { get; set; }
-        [JsonIgnore]
         public virtual ICollection<AdicionaisCarro> Adicionais { get; set; } // relacionamenro 1 para N
 
     }

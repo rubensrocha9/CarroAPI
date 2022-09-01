@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<CarroAPIContext>(options => options.UseSqlServer(connection));
+builder.Services.AddDbContext<CarroAPIContext>(options => options.UseLazyLoadingProxies().UseSqlServer(connection));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
