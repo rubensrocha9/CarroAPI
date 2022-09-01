@@ -40,7 +40,7 @@ namespace CarroAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult RecuperarPorId(int id)
         {
-            Carro carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
+            Carro? carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
             if (carro != null)
             {
                 ReadCarrosDto carrosDto = _mapper.Map<ReadCarrosDto>(carro);
@@ -52,7 +52,7 @@ namespace CarroAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizarCarro(int id, [FromBody] UpdateCarrosDto carroDto)
         {
-            Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            Carro? carro = _context.Carro.FirstOrDefault(c => c.Id == id);
             carro.Adicionais.Clear();
 
             if (carro == null)
@@ -68,7 +68,7 @@ namespace CarroAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult RemoverCarroPotId(int id)
         {
-            Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            Carro? carro = _context.Carro.FirstOrDefault(c => c.Id == id);
 
             if (carro == null)
             {

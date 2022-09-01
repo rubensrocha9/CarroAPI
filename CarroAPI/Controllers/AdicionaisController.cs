@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using CarroAPI.Data;
-using CarroAPI.Data.Dtos;
 using CarroAPI.Data.Dtos.Adicionais;
-using CarroAPI.Data.Dtos.Carros;
 using CarroAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarroAPI.Controllers
 {
@@ -19,7 +16,7 @@ namespace CarroAPI.Controllers
         public AdicionaisController(CarroAPIContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = mapper;   
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -41,7 +38,7 @@ namespace CarroAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult RecuperarPorId(int id)
         {
-            AdicionaisCarro adicionais = _context.Opcionais.FirstOrDefault(c => c.Id == id);
+            AdicionaisCarro? adicionais = _context.Opcionais.FirstOrDefault(c => c.Id == id);
             if (adicionais != null)
             {
                 ReadAdicionaisDto adicionaisDto = _mapper.Map<ReadAdicionaisDto>(adicionais);

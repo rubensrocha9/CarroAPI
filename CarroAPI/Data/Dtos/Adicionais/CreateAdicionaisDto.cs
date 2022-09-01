@@ -1,6 +1,4 @@
-﻿using CarroAPI.Models;
-
-namespace CarroAPI.Data.Dtos.Adicionais
+﻿namespace CarroAPI.Data.Dtos.Adicionais
 {
     public class CreateAdicionaisDto
     {

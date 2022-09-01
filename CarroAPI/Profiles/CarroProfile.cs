@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CarroAPI.Data.Dtos.Adicionais;
 using CarroAPI.Data.Dtos.Carros;
 using CarroAPI.Models;
 
