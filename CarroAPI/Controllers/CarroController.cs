@@ -31,7 +31,7 @@ namespace CarroAPI.Controllers
         }
 
         [HttpGet]
-        public IQueryable<Carro> RecuperarCarro()
+        public IEnumerable<Carro> RecuperarCarro()
         {
             return _context.Carro
                 .Include(c => c.Adicionais);
