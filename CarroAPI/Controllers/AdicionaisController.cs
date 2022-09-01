@@ -2,6 +2,7 @@
 using CarroAPI.Data;
 using CarroAPI.Data.Dtos.Adicionais;
 using CarroAPI.Models;
+using CarroAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,39 +12,29 @@ namespace CarroAPI.Controllers
     [Route("[controller]")]
     public class AdicionaisController : ControllerBase
     {
-        private CarroAPIContext _context;
-        private IMapper _mapper;
+        private AdicionaisService _adicionaisService;
 
-        public AdicionaisController(CarroAPIContext context, IMapper mapper)
+        public AdicionaisController(AdicionaisService adicionaisService)
         {
-            _context = context;
-            _mapper = mapper;
+            _adicionaisService = adicionaisService;
         }
 
         [HttpPost]
         public IActionResult AdicionarAdicionais([FromBody] CreateAdicionaisDto adicionaisDto)
         {
-            AdicionaisCarro adicionais = _mapper.Map<AdicionaisCarro>(adicionaisDto);
-
-            _context.Opcionais.Add(adicionais);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(RecuperarPorId), new { Id = adicionais.Id }, adicionais);
-        }
-
-        [HttpGet]
-        public IEnumerable<AdicionaisCarro> RecuperarCarro()
-        {
-            return _context.Opcionais;
+            ReadAdicionaisDto readDto = _adicionaisService.AdicionarOpcionais(adicionaisDto);
+            
+            return CreatedAtAction(nameof(RecuperarPorId), new { Id = readDto.Id }, readDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperarPorId(int id)
         {
-            AdicionaisCarro adicionais = _context.Opcionais.FirstOrDefault(c => c.Id == id);
-            if (adicionais != null)
+            ReadAdicionaisDto readDto = _adicionaisService.RecuperaOpcionaisPorId(id);
+            
+            if (readDto != null)
             {
-                ReadAdicionaisDto adicionaisDto = _mapper.Map<ReadAdicionaisDto>(adicionais);
-                return Ok(adicionaisDto);
+                return Ok(readDto);
             }
             return NotFound();
         }

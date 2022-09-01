@@ -1,10 +1,12 @@
 using CarroAPI.Data;
+using CarroAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<CarroService, CarroService>();
+builder.Services.AddScoped<AdicionaisService, AdicionaisService>();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
