@@ -33,13 +33,13 @@ namespace CarroAPI.Controllers
         [HttpGet]
         public IEnumerable<AdicionaisCarro> RecuperarCarro()
         {
-            return _context.Opcionais.Include(c => c.Carro);
+            return _context.Opcionais;
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperarPorId(int id)
         {
-            AdicionaisCarro? adicionais = _context.Opcionais.FirstOrDefault(c => c.Id == id);
+            AdicionaisCarro adicionais = _context.Opcionais.FirstOrDefault(c => c.Id == id);
             if (adicionais != null)
             {
                 ReadAdicionaisDto adicionaisDto = _mapper.Map<ReadAdicionaisDto>(adicionais);

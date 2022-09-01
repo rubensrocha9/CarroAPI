@@ -31,16 +31,34 @@ namespace CarroAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Carro> RecuperarCarro()
+        public IActionResult RecuperarCarro([FromQuery] string marcaDoVeiculo = null)
         {
-            return _context.Carro
-                .Include(c => c.Adicionais);
+            List<Carro> carros;
+
+            if (marcaDoVeiculo == null)
+            {
+                carros = _context.Carro
+                    .Include(c => c.Adicionais).ToList();
+            }
+            else
+            {
+               carros  = _context.Carro.Include(c => c.Adicionais).Where
+                    (carros => carros.MarcaDoAutomovel == marcaDoVeiculo).ToList();
+            }
+
+            if (carros != null)
+            {
+                List<ReadCarrosDto> readCarros = _mapper.Map<List<ReadCarrosDto>>(carros);
+                return Ok(readCarros);
+            }
+
+            return NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperarPorId(int id)
         {
-            Carro? carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
+            Carro carro = _context.Carro.Include(c => c.Adicionais).FirstOrDefault(c => c.Id == id);
             if (carro != null)
             {
                 ReadCarrosDto carrosDto = _mapper.Map<ReadCarrosDto>(carro);
@@ -52,7 +70,7 @@ namespace CarroAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizarCarro(int id, [FromBody] UpdateCarrosDto carroDto)
         {
-            Carro? carro = _context.Carro.FirstOrDefault(c => c.Id == id);
+            Carro carro = _context.Carro.FirstOrDefault(c => c.Id == id);
             carro.Adicionais.Clear();
 
             if (carro == null)
