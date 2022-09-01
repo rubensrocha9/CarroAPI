@@ -3,6 +3,7 @@ using CarroAPI.Data;
 using CarroAPI.Data.Dtos.Adicionais;
 using CarroAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarroAPI.Controllers
 {
@@ -30,9 +31,9 @@ namespace CarroAPI.Controllers
         }
 
         [HttpGet]
-        public IQueryable<AdicionaisCarro> RecuperarCarro()
+        public IEnumerable<AdicionaisCarro> RecuperarCarro()
         {
-            return _context.Opcionais;
+            return _context.Opcionais.Include(c => c.Carro);
         }
 
         [HttpGet("{id}")]
